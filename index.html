@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JEE Formula Hub</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; background: #f0f2f5; color: #333; }
+    body.dark { background: #1e1e1e; color: #ddd; }
+    header { text-align: center; margin-bottom: 30px; }
+    h1 { color: #1e88e5; }
+    .dark h1 { color: #64b5f6; }
+    .search-bar { width: 100%; max-width: 600px; padding: 15px; font-size: 18px; border: 2px solid #1e88e5; border-radius: 50px; margin: 0 auto 30px; display: block; }
+    .category-btn { padding: 10px 20px; margin: 5px; border: none; border-radius: 30px; background: #1e88e5; color: white; cursor: pointer; }
+    .formula-card { background: white; border-radius: 15px; padding: 20px; margin: 15px 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    body.dark .formula-card { background: #2d2d2d; }
+    .formula { font-size: 1.3em; font-weight: bold; color: #1e88e5; }
+    .toggle-btn { position: fixed; top: 20px; right: 20px; padding: 10px 15px; background: #1e88e5; color: white; border: none; border-radius: 50px; cursor: pointer; }
+    .about { background: white; border-radius: 15px; padding: 25px; margin: 30px 0; box-shadow: 0 6px 15px rgba(0,0,0,0.1); text-align: center; }
+    body.dark .about { background: #2d2d2d; }
+  </style>
+</head>
+<body>
+  <button class="toggle-btn" onclick="toggleDark()">🌙 Dark Mode</button>
+
+  <header>
+    <h1>JEE Formula Hub</h1>
+    <p>Revision Tool for JEE Main & Advanced</p>
+  </header>
+
+  <div class="about">
+    <h2>About this Project</h2>
+    <p>I created this website while preparing for JEE in dummy admission and coaching. It contains important formulas from Physics, Chemistry and Mathematics. This project helped me organize my revision better.</p>
+  </div>
+
+  <input type="text" class="search-bar" id="search" placeholder="Search formulas..." onkeyup="searchFormulas()">
+
+  <div style="text-align:center; margin-bottom:20px;">
+    <button class="category-btn" onclick="filterCategory('all')">All</button>
+    <button class="category-btn" onclick="filterCategory('physics')">Physics</button>
+    <button class="category-btn" onclick="filterCategory('chemistry')">Chemistry</button>
+    <button class="category-btn" onclick="filterCategory('math')">Math</button>
+  </div>
+
+  <div id="formulas"></div>
+
+  <script>
+    const formulas = [
+      {category: "physics", title: "Newton's Second Law", formula: "F = ma", desc: "Force = mass × acceleration"},
+      {category: "physics", title: "Kinetic Energy", formula: "KE = (1/2)mv²", desc: "Energy of motion"},
+      {category: "physics", title: "Potential Energy", formula: "PE = mgh", desc: "Gravitational potential energy"},
+      {category: "physics", title: "Gravitational Force", formula: "F = G m1 m2 / r²", desc: "Newton's Law of Gravitation"},
+      {category: "physics", title: "Ohm's Law", formula: "V = IR", desc: "Voltage = Current × Resistance"},
+      {category: "physics", title: "Work Done", formula: "W = F d cosθ", desc: "Work by force"},
+      {category: "physics", title: "Power", formula: "P = W / t", desc: "Power = Work / Time"},
+      {category: "physics", title: "Momentum", formula: "p = mv", desc: "Mass × Velocity"},
+      {category: "physics", title: "Centripetal Force", formula: "F = mv²/r", desc: "For circular motion"},
+      {category: "chemistry", title: "Ideal Gas Law", formula: "PV = nRT", desc: "Pressure-Volume-Temperature"},
+      {category: "chemistry", title: "Mole Concept", formula: "n = m / M", desc: "Number of moles"},
+      {category: "chemistry", title: "pH", formula: "pH = -log[H⁺]", desc: "Acidity measure"},
+      {category: "chemistry", title: "Henderson Equation", formula: "pH = pKa + log([Salt]/[Acid])", desc: "Buffer solution"},
+      {category: "math", title: "Quadratic Formula", formula: "x = [-b ± √(b²-4ac)] / (2a)", desc: "Roots of quadratic equation"},
+      {category: "math", title: "Distance Formula", formula: "d = √[(x2-x1)² + (y2-y1)²]", desc: "Between two points"},
+      {category: "math", title: "Slope of Line", formula: "m = (y2-y1)/(x2-x1)", desc: "Slope between two points"},
+      {category: "math", title: "Binomial Theorem", formula: "(a+b)^n = Σ C(n,k) a^(n-k) b^k", desc: "Expansion"},
+      {category: "math", title: "Derivative Power Rule", formula: "d/dx (x^n) = n x^(n-1)", desc: "Power rule"},
+      {category: "math", title: "Integration Power Rule", formula: "∫ x^n dx = x^(n+1)/(n+1) + C", desc: "Basic integration"}
+    ];
+
+    function displayFormulas(filtered) {
+      const container = document.getElementById('formulas');
+      container.innerHTML = '';
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'formula-card';
+        card.innerHTML = `
+          <h3>${item.title} (${item.category.toUpperCase()})</h3>
+          <p class="formula">${item.formula}</p>
+          <p>${item.desc}</p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function searchFormulas() {
+      const term = document.getElementById('search').value.toLowerCase();
+      const filtered = formulas.filter(f => f.title.toLowerCase().includes(term) || f.formula.toLowerCase().includes(term) || f.desc.toLowerCase().includes(term));
+      displayFormulas(filtered);
+    }
+
+    function filterCategory(cat) {
+      let filtered = formulas;
+      if (cat !== 'all') filtered = formulas.filter(f => f.category === cat);
+      displayFormulas(filtered);
+    }
+
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+    }
+
+    displayFormulas(formulas);
+  </script>
+</body>
+</html>
